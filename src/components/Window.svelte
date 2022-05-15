@@ -1,17 +1,19 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import { scale } from 'svelte/transition';
-  import { windowCount } from '../stores';
+  import { windowCount, focusedWindowId } from '../stores';
 
   export let y = 0;
   export let x = 0;
 
-  export let width = 400;
-  export let height = 300;
+  export let width = 600;
+  export let height = 400;
 
   export let titlebar: string;
 
   const dispatch = createEventDispatcher();
+
+  const windowId = crypto.randomUUID();
 
   const fixedY = y;
   const fixedX = x;
@@ -22,8 +24,14 @@
   let windowContainer: HTMLElement;
 
   windowCount.update(count => ++count);
+  focusedWindowId.set(windowId);
 
   const handleFocus = () => {
+    if (!$focusedWindowId) {
+      focusedWindowId.set(windowId);
+      return;
+    }
+
     if (parseInt(windowContainer.style.zIndex) >= $windowCount) return;
 
     document.querySelectorAll('.Window').forEach((window: HTMLElement) => {
@@ -32,6 +40,7 @@
     });
 
     windowContainer.style.zIndex = `${$windowCount}`;
+    focusedWindowId.set(windowId);
   };
 
   const handleMouseDown = ({ clientX, clientY }: MouseEvent) => {
@@ -59,7 +68,9 @@
   };
 
   const handleClose = () => {
+    focusedWindowId.set(null);
     windowCount.update(count => --count);
+
     dispatch('close');
   };
 
@@ -72,7 +83,7 @@
     if (minimized) {
       windowContainer.style.height = `${height}px`;
     } else {
-      windowContainer.style.height = `2rem`;
+      windowContainer.style.height = `2.5rem`;
     }
 
     minimized = !minimized;
@@ -116,7 +127,7 @@
 
 <div style="position: absolute;" transition:scale>
   <div
-    class="Window"
+    class={`Window ${$focusedWindowId === windowId ? 'focused' : ''}`}
     style={initialStyle}
     bind:this={windowContainer}
     on:mousedown={handleFocus}
@@ -149,6 +160,7 @@
     {#if !minimized}
       <div class="Window__content">
         <slot />
+        <p>is focused: {$focusedWindowId === windowId}</p>
       </div>
     {/if}
   </div>
@@ -157,16 +169,16 @@
 <style>
   .Window {
     position: absolute;
-    border: 1px solid #e6e6e6;
+    border: 1px solid var(--windows-br);
     border-radius: 0.5rem;
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
-    background: white;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.2);
+    background: var(--windows-bg);
     overflow: hidden;
   }
 
   .Window__titlebar {
     position: relative;
-    height: 2rem;
+    height: 2.5rem;
     padding: 0 1rem;
     border-bottom: inherit;
     text-align: center;
@@ -183,8 +195,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    line-height: 2.4rem;
     font-size: 1.4rem;
-    font-weight: normal;
+    font-weight: bold;
   }
 
   .Window__buttons {
@@ -199,32 +212,33 @@
   }
 
   .Window__button {
-    width: 1rem;
-    height: 1rem;
+    width: 1.2rem;
+    height: 1.2rem;
     border-radius: 50%;
     border: none;
     outline: none;
     cursor: pointer;
+    background: #aaaaaa;
   }
 
   .Window__button:hover {
     filter: opacity(0.3);
   }
 
-  .Window__button--close {
-    background-color: #ff5f56;
+  .Window.focused .Window__button--close {
+    background: #ff5f56;
   }
 
-  .Window__button--min {
-    background-color: #ffbd2e;
+  .Window.focused .Window__button--min {
+    background: #ffbd2e;
   }
 
-  .Window__button--max {
-    background-color: #27c93f;
+  .Window.focused .Window__button--max {
+    background: #27c93f;
   }
 
   .Window__content {
-    height: calc(100% - 2rem);
+    height: calc(100% - 2.5rem);
     overflow: scroll;
   }
 </style>

@@ -5,8 +5,8 @@
   let showInitScreen = true;
 </script>
 
-<!-- {#if showInitScreen}
+{#if showInitScreen}
   <InitScreen on:finished={() => (showInitScreen = false)} />
-{:else} -->
-<Desktop />
-<!-- {/if} -->
+{:else}
+  <Desktop />
+{/if}

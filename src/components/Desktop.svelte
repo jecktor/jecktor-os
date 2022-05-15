@@ -19,6 +19,6 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Clouds_over_the_Atlantic_Ocean.jpg');
+    background-image: url('/static/wallpaper.webp');
   }
 </style>

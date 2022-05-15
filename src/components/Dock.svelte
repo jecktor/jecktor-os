@@ -9,6 +9,7 @@
   <Program />
   <Program />
   <Program />
+  <Program />
 </div>
 
 <style>
@@ -16,7 +17,10 @@
     width: fit-content;
     height: fit-content;
     margin-bottom: 1rem;
+    padding: 0.6rem 1rem;
+    border-radius: 1rem;
     display: flex;
     gap: 1rem;
+    background: var(--panels-bg);
   }
 </style>

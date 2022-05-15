@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { windowCount } from '../stores';
+  import { windowCount, focusedWindowId } from '../stores';
 
   import Window from './Window.svelte';
 
@@ -11,6 +11,7 @@
         if (window.style.zIndex > '1')
           window.style.zIndex = `${parseInt(window.style.zIndex) - 1}`;
       });
+      focusedWindowId.set(null);
       windowCount.update(count => --count);
     }
     open = !open;
@@ -20,8 +21,8 @@
 <div class={`Program ${open ? 'open' : ''}`}>
   {#if open}
     <Window
-      x={-180}
-      y={-400}
+      x={-270}
+      y={-600}
       titlebar="testfor01"
       on:close={() => (open = false)}
     >
@@ -42,7 +43,7 @@
   }
 
   .Program.open {
-    background: rgba(10, 10, 10, 0.5);
+    background: var(--panels-fg);
   }
 
   .Program button {
