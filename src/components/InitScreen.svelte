@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte';
   import { fade } from 'svelte/transition';
+  import { shuffle, sleep } from '../utils';
 
   const dispatch = createEventDispatcher();
 
@@ -18,20 +19,6 @@
     'Starting system message bus: dbus',
     'Starting NTP server: ntpd',
   ];
-
-  const shuffle = (arr: string[]) => {
-    const a = arr.slice();
-
-    for (let i = a.length - 1; i > 0; --i) {
-      let j = Math.floor(Math.random() * (i + 1));
-      let tmp = a[i];
-      a[i] = a[j];
-      a[j] = tmp;
-    }
-    return a;
-  };
-
-  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   initLogs = shuffle(initLogs);
 
@@ -63,6 +50,7 @@
     inset: 0;
     width: 100%;
     height: 100%;
+    user-select: none;
     background: black;
     color: white;
   }

@@ -1,11 +1,27 @@
 <script lang="ts">
   import { windowCount, focusedWindowId } from '../stores';
+  import { sleep } from '../utils';
 
   import Window from './Window.svelte';
 
-  let open = false;
+  export let name: string;
+  export let icon = '/static/icons/default.svg';
 
-  const handleToggleWindow = () => {
+  let open = false;
+  let animFinished = true;
+
+  const handleCloseWindow = async () => {
+    if (!animFinished) return;
+
+    animFinished = false;
+    open = false;
+    await sleep(400);
+    animFinished = true;
+  };
+
+  const handleToggleWindow = async () => {
+    if (!animFinished) return;
+
     if (open) {
       document.querySelectorAll('.Window').forEach((window: HTMLElement) => {
         if (window.style.zIndex > '1')
@@ -14,39 +30,42 @@
       focusedWindowId.set(null);
       windowCount.update(count => --count);
     }
+    animFinished = false;
     open = !open;
+    await sleep(400);
+    animFinished = true;
   };
 </script>
 
-<div class={`Program ${open ? 'open' : ''}`}>
+<div class={`Application ${open ? 'open' : ''}`}>
   {#if open}
     <Window
       x={-270}
-      y={-600}
-      titlebar="testfor01"
-      on:close={() => (open = false)}
+      y={-window.innerHeight / 1.5}
+      titlebar={name}
+      on:close={handleCloseWindow}
     >
-      <h1>Floating window</h1>
+      <slot />
     </Window>
   {/if}
-  <button type="button" on:click={handleToggleWindow}>
-    <img src="/static/Papirus-Team-Papirus-Apps-0ad.svg" alt="icon" />
+  <button type="button" aria-label="Application" on:click={handleToggleWindow}>
+    <img src={icon} alt="" aria-hidden="true" />
   </button>
 </div>
 
 <style>
-  .Program {
+  .Application {
     width: 5rem;
     height: 5rem;
     border-radius: 1rem;
     transition: background 100ms ease-out;
   }
 
-  .Program.open {
+  .Application.open {
     background: var(--panels-fg);
   }
 
-  .Program button {
+  .Application button {
     width: 100%;
     height: 100%;
     background: none;
@@ -56,12 +75,16 @@
     transition: all 100ms ease-in-out;
   }
 
-  .Program button:hover {
+  .Application button:hover {
     filter: brightness(1.2);
     transform: scale(1.4);
   }
 
-  .Program img {
+  .Application button:active {
+    transform: scale(1);
+  }
+
+  .Application img {
     max-width: 100%;
   }
 </style>

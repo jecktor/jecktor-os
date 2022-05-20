@@ -1,6 +1,10 @@
 <script lang="ts">
+  import { darkTheme } from '../stores';
+
   import Topbar from './Topbar.svelte';
   import Dock from './Dock.svelte';
+
+  darkTheme.toggle();
 </script>
 
 <div class="Desktop">

@@ -160,7 +160,6 @@
     {#if !minimized}
       <div class="Window__content">
         <slot />
-        <p>is focused: {$focusedWindowId === windowId}</p>
       </div>
     {/if}
   </div>
@@ -222,18 +221,21 @@
   }
 
   .Window__button:hover {
-    filter: opacity(0.3);
+    opacity: 0.3;
   }
 
-  .Window.focused .Window__button--close {
+  .Window.focused .Window__button--close,
+  .Window__button--close:hover {
     background: #ff5f56;
   }
 
-  .Window.focused .Window__button--min {
+  .Window.focused .Window__button--min,
+  .Window__button--min:hover {
     background: #ffbd2e;
   }
 
-  .Window.focused .Window__button--max {
+  .Window.focused .Window__button--max,
+  .Window__button--max:hover {
     background: #27c93f;
   }
 
