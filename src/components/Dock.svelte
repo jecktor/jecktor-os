@@ -1,12 +1,12 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
 
-  import Stateful from '../applications/Stateful.svelte';
+  import { Terminal, Stateful } from '../applications';
 </script>
 
 <div class="Dock" transition:fly={{ y: 50, delay: 500 }}>
   <Stateful />
-  <Stateful />
+  <Terminal />
   <Stateful />
   <Stateful />
 </div>

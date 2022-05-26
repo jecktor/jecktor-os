@@ -92,7 +92,7 @@
     if (minimized) {
       windowContainer.style.height = `${height}px`;
     } else {
-      windowContainer.style.height = `2.5rem`;
+      windowContainer.style.height = `3rem`;
     }
 
     minimized = !minimized;
@@ -185,7 +185,7 @@
   .Window {
     position: absolute;
     border: 1px solid var(--windows-br);
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.2);
     background: var(--windows-bg);
     overflow: hidden;
@@ -193,7 +193,7 @@
 
   .Window__titlebar {
     position: relative;
-    height: 2.5rem;
+    height: 3rem;
     padding: 0 1rem;
     border-bottom: inherit;
     cursor: grab;
@@ -211,16 +211,16 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    line-height: 2.4rem;
+    line-height: 2.6rem;
     font-size: 1.4rem;
     font-weight: bold;
   }
 
   .Window__buttons {
     position: absolute;
-    left: 0.5rem;
+    left: 1rem;
     top: 50%;
-    gap: 0.6rem;
+    gap: 0.7rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -243,21 +243,21 @@
 
   .Window.focused .Window__button--close,
   .Window__button--close:hover {
-    background: #ff5f56;
+    background: #ff605c;
   }
 
   .Window.focused .Window__button--min,
   .Window__button--min:hover {
-    background: #ffbd2e;
+    background: #ffbd44;
   }
 
   .Window.focused .Window__button--max,
   .Window__button--max:hover {
-    background: #27c93f;
+    background: #00ca4e;
   }
 
   .Window__content {
-    height: calc(100% - 2.5rem);
+    height: calc(100% - 3rem);
     overflow: scroll;
   }
 </style>

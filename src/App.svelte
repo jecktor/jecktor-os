@@ -1,6 +1,5 @@
 <script lang="ts">
-  import InitScreen from './components/InitScreen.svelte';
-  import Desktop from './components/Desktop.svelte';
+  import { InitScreen, Desktop } from './components';
 
   let showInitScreen = true;
 </script>

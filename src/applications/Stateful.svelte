@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Application from '../components/Application.svelte';
+  import { Application } from '../components';
 
   let count = 0;
 </script>

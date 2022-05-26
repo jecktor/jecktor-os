@@ -2,7 +2,7 @@
   import { windowCount, focusedWindowId } from '../stores';
   import { sleep } from '../utils';
 
-  import Window from './Window.svelte';
+  import { Window } from '.';
 
   export let name: string;
   export let icon = '/static/icons/default.svg';
