@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import { scale } from 'svelte/transition';
+  import { blur } from 'svelte/transition';
+  import { portal } from 'svelte-portal/src/Portal.svelte';
   import { windowCount, focusedWindowId } from '../stores';
 
   export let y = 0;
@@ -15,8 +16,8 @@
 
   const windowId = crypto.randomUUID();
 
-  const fixedY = y;
-  const fixedX = x;
+  let fixedY = y;
+  let fixedX = x;
 
   let maximized = false;
   let minimized = false;
@@ -57,11 +58,19 @@
   };
 
   const handleMouseMove = ({ clientX, clientY }: MouseEvent) => {
-    const dx = clientX - x;
-    const dy = clientY - y;
+    if (maximized) {
+      handleMaximize();
 
-    windowContainer.style.top = `${windowContainer.offsetTop + dy}px`;
-    windowContainer.style.left = `${windowContainer.offsetLeft + dx}px`;
+      windowContainer.style.left = `${clientX - width / 2}px`;
+      windowContainer.style.top = `${clientY - 13}px`;
+    }
+
+    const posX = windowContainer.offsetLeft + (clientX - x);
+    const posY = windowContainer.offsetTop + (clientY - y);
+
+    windowContainer.style.left = `${posX}px`;
+
+    if (clientY >= 0) windowContainer.style.top = `${posY}px`;
 
     x = clientX;
     y = clientY;
@@ -104,6 +113,9 @@
       windowContainer.style.width = `${width}px`;
       windowContainer.style.height = `${height}px`;
     } else {
+      fixedY = parseInt(windowContainer.style.top);
+      fixedX = parseInt(windowContainer.style.left);
+
       windowContainer.parentElement.style.position = 'static';
 
       windowContainer.style.top = '0px';
@@ -125,14 +137,18 @@
   `;
 </script>
 
-<div style="position: absolute;" transition:scale>
+<div style="position: absolute;" use:portal={'.Desktop'} transition:blur>
   <div
     class={`Window ${$focusedWindowId === windowId ? 'focused' : ''}`}
     style={initialStyle}
     bind:this={windowContainer}
     on:mousedown={handleFocus}
   >
-    <header class="Window__titlebar" on:mousedown={handleMouseDown}>
+    <header
+      class="Window__titlebar"
+      on:mousedown={handleMouseDown}
+      on:dblclick={handleMaximize}
+    >
       <div class="Window__buttons">
         <button
           type="button"
@@ -180,6 +196,7 @@
     height: 2.5rem;
     padding: 0 1rem;
     border-bottom: inherit;
+    cursor: grab;
     text-align: center;
     user-select: none;
   }

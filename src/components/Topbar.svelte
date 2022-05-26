@@ -27,6 +27,8 @@
     width: 100%;
     height: 2.5rem;
     padding: 0 1rem;
+    position: absolute;
+    top: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;

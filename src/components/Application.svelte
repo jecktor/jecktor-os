@@ -40,8 +40,8 @@
 <div class={`Application ${open ? 'open' : ''}`}>
   {#if open}
     <Window
-      x={-270}
-      y={-window.innerHeight / 1.5}
+      x={window.innerWidth / (6 - $windowCount)}
+      y={window.innerHeight / (6 - $windowCount)}
       titlebar={name}
       on:close={handleCloseWindow}
     >

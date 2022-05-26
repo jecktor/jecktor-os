@@ -15,6 +15,10 @@
   .Dock {
     width: fit-content;
     height: fit-content;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     margin-bottom: 1rem;
     padding: 0.6rem 1rem;
     border-radius: 1rem;
