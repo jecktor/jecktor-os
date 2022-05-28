@@ -7,8 +7,58 @@
   let terminalOutput: HTMLElement;
   let typerInput: HTMLInputElement;
 
+  const commands = {
+    clear: {
+      cmd: () => (terminalOutput.innerHTML = ''),
+      desc: 'clear the terminal screen',
+    },
+    help: {
+      cmd: () =>
+        Object.keys(commands).forEach(cmd => {
+          const line = `
+          <div>
+            ${cmd}
+            <span style="margin-left: 8rem;">${commands[cmd].desc}</span>
+          </div>
+          `;
+
+          addToOutput(line);
+        }),
+      desc: 'print this help',
+    },
+  };
+
+  const addToOutput = (content: string) => {
+    terminalOutput.innerHTML += content;
+    terminalOutput.parentElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+    });
+  };
+
   const initTerminal = () => {
     typerInput.focus();
+
+    addToOutput(`
+    <div>Type 'help' to display a list of all integrated shell commands.</div>
+    `);
+  };
+
+  const validateInput = (command: string) => {
+    const validCommand = Object.keys(commands).find(cmd => command === cmd);
+
+    if (validCommand) {
+      commands[validCommand].cmd();
+      return;
+    }
+
+    addToOutput(`
+    <span>
+      shell: command not found: ${command}
+      <br />
+      Type 'help' for a list of commands.
+    </span>
+    `);
   };
 
   const handleUserInput = () => {
@@ -21,13 +71,15 @@
     tmpEl.innerText = input;
     const command = tmpEl.innerHTML;
 
-    terminalOutput.innerHTML += `
+    addToOutput(`
       <div class="Terminal__input">
         <span class="indicator">&#10140;</span>
         <span class="directory">~</span>
         <span class="typer">${command}</span>
       </div>
-      `;
+    `);
+
+    validateInput(command);
   };
 
   const handleInputEvents = (e: KeyboardEvent) => {
@@ -52,13 +104,7 @@
   on:open={initTerminal}
 >
   <div class="Terminal">
-    <div class="Terminal__output" bind:this={terminalOutput}>
-      <div>
-        <span>
-          Type 'help' to display a list of all integrated shell commands.
-        </span>
-      </div>
-    </div>
+    <div class="Terminal__output" bind:this={terminalOutput} />
     <div class="Terminal__input">
       <span class="indicator">&#10140;</span>
       <span class="directory">~</span>
@@ -85,13 +131,17 @@
   }
 
   .Terminal {
-    margin: 0.5rem 1rem;
+    padding: 0.5rem 1rem;
     font-size: 1.6rem;
     font-family: 'JetBrains Mono', Consolas, Lucida Console, monospace;
   }
 
-  .Terminal__output {
-    overflow-y: hidden;
+  :global(.Terminal__output > *) {
+    margin-block: 0.5rem;
+  }
+
+  .Terminal__input {
+    margin-top: 0.5rem;
   }
 
   :global(.Terminal__input) {
@@ -116,6 +166,7 @@
     top: 0.25rem;
     font-size: 1.2rem;
     animation: blink 1s step-start 0s infinite;
+    opacity: 0.5;
   }
   .hidden-input {
     position: absolute;
