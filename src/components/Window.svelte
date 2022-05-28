@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import { blur } from 'svelte/transition';
   import { portal } from 'svelte-portal/src/Portal.svelte';
   import { windowCount, focusedWindowId } from '../stores';
@@ -135,6 +135,8 @@
   height: ${height}px;
   z-index: ${$windowCount};
   `;
+
+  onMount(() => dispatch('open'));
 </script>
 
 <div style="position: absolute;" use:portal={'.Desktop'} transition:blur>
@@ -195,7 +197,6 @@
     position: relative;
     height: 3rem;
     padding: 0 1rem;
-    border-bottom: inherit;
     cursor: grab;
     text-align: center;
     user-select: none;

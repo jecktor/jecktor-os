@@ -12,7 +12,7 @@
     crossorigin="anonymous"
   />
   <link
-    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@300;400;700&display=swap"
     rel="stylesheet"
   />
 </svelte:head>

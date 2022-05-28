@@ -44,6 +44,7 @@
       y={window.innerHeight / (6 - $windowCount)}
       titlebar={name}
       on:close={handleCloseWindow}
+      on:open
     >
       <slot />
     </Window>
