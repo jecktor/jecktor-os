@@ -34,14 +34,20 @@
   });
 </script>
 
-<div class="InitScreen" bind:this={logsContainer} out:fade>
-  {#each initLogs as log, idx (idx)}
-    <div class="InitScreen__log hidden notDone">
-      &#91; <span class="status">ok</span> &#93; {log} ...<span class="done"
-        >done.</span
-      >
-    </div>
-  {/each}
+<div class="InitScreen" out:fade>
+  <div class="InitScreen__greet">
+    <div>{new Date().toLocaleString()}<br />Version 1.0.0</div>
+    <div>Welcome to <span>jecktorOS</span>!</div>
+  </div>
+  <div bind:this={logsContainer}>
+    {#each initLogs as log, idx (idx)}
+      <div class="InitScreen__log hidden notDone">
+        &#91; <span class="status">ok</span> &#93; {log} ...<span class="done"
+          >done.</span
+        >
+      </div>
+    {/each}
+  </div>
 </div>
 
 <style>
@@ -53,10 +59,15 @@
     user-select: none;
     background: black;
     color: white;
+    font-family: 'JetBrains Mono', Consolas, Lucida Console, monospace;
   }
 
-  .InitScreen__log {
-    font-family: monospace;
+  .InitScreen__greet div {
+    margin-bottom: 3rem;
+  }
+
+  .InitScreen__greet span {
+    color: cyan;
   }
 
   .InitScreen__log .status {
