@@ -51,6 +51,7 @@
   {/if}
   <button type="button" aria-label="Application" on:click={handleToggleWindow}>
     <img src={icon} alt="" aria-hidden="true" />
+    <span class="tooltip">{name}</span>
   </button>
 </div>
 
@@ -67,6 +68,7 @@
   }
 
   .Application button {
+    position: relative;
     width: 100%;
     height: 100%;
     background: none;
@@ -81,11 +83,40 @@
     transform: scale(1.4);
   }
 
+  .Application button:hover .tooltip {
+    visibility: visible;
+  }
+
   .Application button:active {
     transform: scale(1);
   }
 
   .Application img {
     max-width: 100%;
+  }
+
+  .Application .tooltip {
+    position: absolute;
+    top: -3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    visibility: hidden;
+    background: var(--panels-bg);
+    color: var(--font-color);
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .Application .tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: inherit;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--panels-bg) transparent transparent transparent;
+    margin-left: -0.5rem;
   }
 </style>
