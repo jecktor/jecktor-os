@@ -16,7 +16,11 @@
       aria-label="Toggle dark theme"
       on:click={darkTheme.toggle}
     >
-      <img src="/static/moon.svg" alt="" aria-hidden="true" />
+      <img
+        src={$darkTheme ? '/static/moon.svg' : '/static/sun.svg'}
+        alt=""
+        aria-hidden="true"
+      />
     </button>
     <p>{new Date().toDateString()}</p>
   </div>
