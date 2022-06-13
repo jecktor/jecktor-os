@@ -83,6 +83,8 @@
   };
 
   const handleInputEvents = (e: KeyboardEvent) => {
+    if (e.ctrlKey || e.shiftKey) return;
+
     switch (e.key) {
       case 'ArrowRight':
         -(caretPosition - userInput.length) <= userInput.length &&
